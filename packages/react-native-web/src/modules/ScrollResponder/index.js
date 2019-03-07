@@ -438,12 +438,13 @@ const ScrollResponderMixin = {
   ) {
     this.additionalScrollOffset = additionalOffset || 0;
     this.preventNegativeScrollOffset = !!preventNegativeScrollOffset;
-    UIManager.measureLayout(
+    const timeout = UIManager.measureLayout(
       nodeHandle,
       findNodeHandle(this.getInnerViewNode()),
       this.scrollResponderTextInputFocusError,
       this.scrollResponderInputMeasureAndScrollToKeyboard
     );
+    this.timeouts.push(timeout);
   },
 
   /**
@@ -498,6 +499,14 @@ const ScrollResponderMixin = {
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardWillHide', this.scrollResponderKeyboardWillHide);
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardDidShow', this.scrollResponderKeyboardDidShow);
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardDidHide', this.scrollResponderKeyboardDidHide);
+  },
+
+  componentWillUnmount: function() {
+    this.clearTimeouts();
+  },
+
+  clearTimeouts: function() {
+    this.timeouts.forEach(clearTimeout);
   },
 
   /**

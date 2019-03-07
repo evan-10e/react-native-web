@@ -23,7 +23,7 @@ const getRect = node => {
 const measureLayout = (node, relativeToNativeNode, callback) => {
   const relativeNode = relativeToNativeNode || (node && node.parentNode);
   if (node && relativeNode) {
-    setTimeout(() => {
+    return setTimeout(() => {
       const relativeRect = getBoundingClientRect(relativeNode);
       const { height, left, top, width } = getRect(node);
       const x = left - relativeRect.left;

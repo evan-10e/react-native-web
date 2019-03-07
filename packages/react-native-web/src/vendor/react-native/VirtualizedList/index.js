@@ -1057,7 +1057,7 @@ class VirtualizedList extends React.PureComponent<Props, State> {
   };
 
   _measureLayoutRelativeToContainingList(): void {
-    UIManager.measureLayout(
+    const timeout = this.UIManager.measureLayout(
       findNodeHandle(this),
       findNodeHandle(
         this.context.virtualizedList.getOutermostParentListRef(),
@@ -1079,6 +1079,7 @@ class VirtualizedList extends React.PureComponent<Props, State> {
         this._scrollMetrics.offset = scrollMetrics.offset;
       },
     );
+    this.timeouts.push(timeout);
   }
 
   _onLayout = (e: Object) => {
@@ -1618,8 +1619,11 @@ class CellRenderer extends React.Component<
 
   componentWillUnmount() {
     this.props.onUnmount(this.props.cellKey);
+    this.clearTimeouts()
   }
 
+  clearTimeouts() { this.timeouts.forEach(clearTimeout) }
+  
   render() {
     const {
       CellRendererComponent,
