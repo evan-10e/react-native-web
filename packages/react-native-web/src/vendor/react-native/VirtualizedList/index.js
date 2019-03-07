@@ -1619,10 +1619,10 @@ class CellRenderer extends React.Component<
 
   componentWillUnmount() {
     this.props.onUnmount(this.props.cellKey);
-    this.clearTimeouts()
+    this.clearTimeouts();
   }
 
-  clearTimeouts() { this.timeouts.forEach(clearTimeout) }
+  clearTimeouts() { this.timeouts.forEach(clearTimeout); }
   
   render() {
     const {
